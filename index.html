@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Datos Personales</title>
+    <!-- Hoja de estilo estándar por defecto -->
+    <link id="estilo" rel="stylesheet" href="estilos-estandar.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Datos Personales</h1>
+        <form action="#" method="post">
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+
+            <div class="form-group">
+                <label for="apellido">Apellido:</label>
+                <input type="text" id="apellido" name="apellido" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="fecha-nacimiento">Fecha de Nacimiento:</label>
+                <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" required>
+            </div>
+
+            <div class="form-group">
+                <label for="pais">País de Residencia:</label>
+                <select id="pais" name="pais" required>
+                    <option value="">Seleccione un país</option>
+                    <option value="es">España</option>
+                    <option value="mx">México</option>
+                    <option value="ar">Argentina</option>
+                    <!-- Añade más opciones según sea necesario -->
+                </select>
+            </div>
+
+            <button type="submit">Enviar</button>
+        </form>
+
+        <!-- Botón para alternar estilos -->
+        <button id="toggle-contrast">Cambiar a Alto Contraste</button>
+    </div>
+
+    <!-- Script para alternar estilos -->
+    <script src="script.js"></script>
+</body>
+</html>
