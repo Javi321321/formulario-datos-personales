@@ -4,52 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Datos Personales</title>
-    <!-- Hoja de estilo estándar por defecto -->
     <link id="estilo" rel="stylesheet" href="estilos-estandar.css">
 </head>
 <body>
     <div class="container">
         <h1>Datos Personales</h1>
-        <form action="#" method="post">
+        <form id="formulario" action="#" method="post" novalidate>
             <div class="form-group">
                 <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required>
+                <input type="text" id="nombre" name="nombre" required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,50}" title="El nombre solo puede contener letras y debe tener entre 2 y 50 caracteres.">
+                <span class="error" aria-live="polite"></span>
             </div>
 
             <div class="form-group">
                 <label for="apellido">Apellido:</label>
-                <input type="text" id="apellido" name="apellido" required>
+                <input type="text" id="apellido" name="apellido" required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,50}" title="El apellido solo puede contener letras y debe tener entre 2 y 50 caracteres.">
+                <span class="error" aria-live="polite"></span>
             </div>
 
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" required title="Debe ser un email válido en formato usuario@dominio.com.">
+                <span class="error" aria-live="polite"></span>
             </div>
 
             <div class="form-group">
                 <label for="fecha-nacimiento">Fecha de Nacimiento:</label>
                 <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" required>
+                <span class="error" aria-live="polite"></span>
             </div>
 
             <div class="form-group">
                 <label for="pais">País de Residencia:</label>
                 <select id="pais" name="pais" required>
                     <option value="">Seleccione un país</option>
-                    <option value="es">España</option>
-                    <option value="mx">México</option>
-                    <option value="ar">Argentina</option>
-                    <!-- Añade más opciones según sea necesario -->
+                    <option value="Argentina">Argentina</option>
+                    <option value="España">España</option>
+                    <option value="México">México</option>
                 </select>
+                <span class="error" aria-live="polite"></span>
             </div>
 
             <button type="submit">Enviar</button>
         </form>
 
-        <!-- Botón para alternar estilos -->
         <button id="toggle-contrast">Cambiar a Alto Contraste</button>
     </div>
 
-    <!-- Script para alternar estilos -->
-    <script src="script.js"></script>
+    <script>
+        // Validación del formulario con mensajes personalizados
+        const form = document.getElementById('formulario');
+
+        form.addEventListener('submit', function (event) {
+            let isValid = true;
+
+            // Validar nombre
+            const nombre = document.getElementById('nombre');
+            if (!nombre.checkValidity()) {
+                mostrarError(nombre, 'El nombre solo puede contener letras y debe tener entre 2 y 50 caracteres.');
+                isValid = false;
+            }
+
+            // Validar apellido
+            const apellido = document.getElementById('apellido');
+            if (!apellido.checkValidity()) {
+                mostrarError(apellido, 'El apellido solo puede contener letras y debe tener entre 2 y 50 caracteres.');
+                isValid = false;
+            }
+
+            // Validar email
+            const email = document.getElementById('email');
+            if (!email.checkValidity()) {
+                mostrarError(email, 'Debe ser un email válido en formato usuario@dominio.com.');
+                isValid = false;
+            }
+
+            // Validar fecha de nacimiento (mayoría de edad)
+            const fechaNacimiento = document.getElementById('fecha-nacimiento');
+            const fechaActual = new Date();
+            const fechaIngresada = new Date(fechaNacimiento.value);
+            const edad = fechaActual.getFullYear() - fechaIngresada.getFullYear();
+            if (edad < 18) {
+                mostrarError(fechaNacimiento, 'Debes ser mayor de 18 años para continuar.');
+                isValid = false;
+            }
+
+            // Validar país de residencia
+            const pais = document.getElementById('pais');
+            if (!pais.checkValidity()) {
+                mostrarError(pais, 'Debes seleccionar un país de residencia.');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                event.preventDefault();  // Prevenir el envío si hay errores
+            }
+        });
+
+        function mostrarError(input, message) {
+            const errorSpan = input.nextElementSibling;
+            errorSpan.textContent = message;
+        }
+
+    </script>
 </body>
 </html>
