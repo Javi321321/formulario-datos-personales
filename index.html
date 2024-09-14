@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Datos Personales</title>
     <link id="estilo" rel="stylesheet" href="estilos-estandar.css">
+    <style>
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -13,25 +19,25 @@
             <div class="form-group">
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,50}" title="El nombre solo puede contener letras y debe tener entre 2 y 50 caracteres.">
-                <span class="error" aria-live="polite"></span>
+                <span class="error" id="error-nombre" aria-live="polite"></span>
             </div>
 
             <div class="form-group">
                 <label for="apellido">Apellido:</label>
                 <input type="text" id="apellido" name="apellido" required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,50}" title="El apellido solo puede contener letras y debe tener entre 2 y 50 caracteres.">
-                <span class="error" aria-live="polite"></span>
+                <span class="error" id="error-apellido" aria-live="polite"></span>
             </div>
 
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required title="Debe ser un email válido en formato usuario@dominio.com.">
-                <span class="error" aria-live="polite"></span>
+                <span class="error" id="error-email" aria-live="polite"></span>
             </div>
 
             <div class="form-group">
                 <label for="fecha-nacimiento">Fecha de Nacimiento:</label>
                 <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" required>
-                <span class="error" aria-live="polite"></span>
+                <span class="error" id="error-fecha" aria-live="polite"></span>
             </div>
 
             <div class="form-group">
@@ -42,7 +48,7 @@
                     <option value="España">España</option>
                     <option value="México">México</option>
                 </select>
-                <span class="error" aria-live="polite"></span>
+                <span class="error" id="error-pais" aria-live="polite"></span>
             </div>
 
             <button type="submit">Enviar</button>
@@ -60,40 +66,55 @@
 
             // Validar nombre
             const nombre = document.getElementById('nombre');
+            const errorNombre = document.getElementById('error-nombre');
             if (!nombre.checkValidity()) {
-                mostrarError(nombre, 'El nombre solo puede contener letras y debe tener entre 2 y 50 caracteres.');
+                mostrarError(errorNombre, 'Carácter inválido: El nombre solo puede contener letras y debe tener entre 2 y 50 caracteres.');
                 isValid = false;
+            } else {
+                ocultarError(errorNombre);
             }
 
             // Validar apellido
             const apellido = document.getElementById('apellido');
+            const errorApellido = document.getElementById('error-apellido');
             if (!apellido.checkValidity()) {
-                mostrarError(apellido, 'El apellido solo puede contener letras y debe tener entre 2 y 50 caracteres.');
+                mostrarError(errorApellido, 'Carácter inválido: El apellido solo puede contener letras y debe tener entre 2 y 50 caracteres.');
                 isValid = false;
+            } else {
+                ocultarError(errorApellido);
             }
 
             // Validar email
             const email = document.getElementById('email');
+            const errorEmail = document.getElementById('error-email');
             if (!email.checkValidity()) {
-                mostrarError(email, 'Debe ser un email válido en formato usuario@dominio.com.');
+                mostrarError(errorEmail, 'Carácter inválido: Debe ser un email válido en formato usuario@dominio.com.');
                 isValid = false;
+            } else {
+                ocultarError(errorEmail);
             }
 
             // Validar fecha de nacimiento (mayoría de edad)
             const fechaNacimiento = document.getElementById('fecha-nacimiento');
+            const errorFecha = document.getElementById('error-fecha');
             const fechaActual = new Date();
             const fechaIngresada = new Date(fechaNacimiento.value);
             const edad = fechaActual.getFullYear() - fechaIngresada.getFullYear();
             if (edad < 18) {
-                mostrarError(fechaNacimiento, 'Debes ser mayor de 18 años para continuar.');
+                mostrarError(errorFecha, 'Debes ser mayor de 18 años para continuar.');
                 isValid = false;
+            } else {
+                ocultarError(errorFecha);
             }
 
             // Validar país de residencia
             const pais = document.getElementById('pais');
+            const errorPais = document.getElementById('error-pais');
             if (!pais.checkValidity()) {
-                mostrarError(pais, 'Debes seleccionar un país de residencia.');
+                mostrarError(errorPais, 'Debes seleccionar un país de residencia.');
                 isValid = false;
+            } else {
+                ocultarError(errorPais);
             }
 
             if (!isValid) {
@@ -101,10 +122,27 @@
             }
         });
 
-        function mostrarError(input, message) {
-            const errorSpan = input.nextElementSibling;
-            errorSpan.textContent = message;
+        function mostrarError(elemento, mensaje) {
+            elemento.textContent = mensaje;
         }
+
+        function ocultarError(elemento) {
+            elemento.textContent = '';
+        }
+
+        // Funcionalidad para alternar entre estilo normal y alto contraste
+        const toggleButton = document.getElementById('toggle-contrast');
+        const estiloLink = document.getElementById('estilo');
+
+        toggleButton.addEventListener('click', () => {
+            if (estiloLink.getAttribute('href') === 'estilos-estandar.css') {
+                estiloLink.setAttribute('href', 'estilos-alto-contraste.css');
+                toggleButton.textContent = 'Cambiar a Estilo Institucional';
+            } else {
+                estiloLink.setAttribute('href', 'estilos-estandar.css');
+                toggleButton.textContent = 'Cambiar a Alto Contraste';
+            }
+        });
 
     </script>
 </body>
