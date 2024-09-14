@@ -100,7 +100,7 @@
             const fechaActual = new Date();
             const fechaIngresada = new Date(fechaNacimiento.value);
             const edad = fechaActual.getFullYear() - fechaIngresada.getFullYear();
-            if (edad < 18) {
+            if (edad < 18 || isNaN(fechaIngresada.getTime())) {
                 mostrarError(errorFecha, 'Debes ser mayor de 18 años para continuar.');
                 isValid = false;
             } else {
