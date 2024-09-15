@@ -87,7 +87,8 @@
             // Validar email
             const email = document.getElementById('email');
             const errorEmail = document.getElementById('error-email');
-            if (!email.checkValidity()) {
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(email.value)) {
                 mostrarError(errorEmail, 'Carácter inválido: Debe ser un email válido en formato usuario@dominio.com.');
                 isValid = false;
             } else {
